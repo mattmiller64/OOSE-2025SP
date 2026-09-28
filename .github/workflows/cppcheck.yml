@@ -18,8 +18,27 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y cppcheck
 
       - name: Run cppcheck
+        shell: bash
         run: |
-          cppcheck --enable=all \
-                   --suppressions-list=cppcheck-suppressions.xml \
-                   --error-exitcode=1 \
-                   .
+          mapfile -t cpp_files < <(
+            find . -type f \
+              \( -name '*.c' -o -name '*.cc' -o -name '*.cpp' -o -name '*.cxx' \
+                 -o -name '*.h' -o -name '*.hh' -o -name '*.hpp' -o -name '*.hxx' \) \
+              ! -path './.git/*'
+          )
+
+          if ((${#cpp_files[@]} == 0)); then
+            echo 'No C/C++ source files found; cppcheck skipped.'
+            exit 0
+          fi
+
+          printf 'Checking %d C/C++ file(s):\n' "${#cpp_files[@]}"
+          printf ' - %s\n' "${cpp_files[@]}"
+
+          cppcheck \
+            --enable=all \
+            --language=c++ \
+            --suppressions-list=.github/workflows/cppcheck-suppressions.xml \
+            --error-exitcode=1 \
+            --inline-suppr \
+            "${cpp_files[@]}"
