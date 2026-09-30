@@ -38,7 +38,7 @@ jobs:
           cppcheck \
             --enable=all \
             --language=c++ \
-            --suppress-xml=cppcheck-suppressions.xml \
+             --suppress-xml="$PWD/cppcheck-suppressions.xml" \
             --error-exitcode=1 \
             --inline-suppr \
             "${cpp_files[@]}"
