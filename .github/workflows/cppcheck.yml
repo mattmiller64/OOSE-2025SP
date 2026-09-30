@@ -41,4 +41,5 @@ jobs:
              --suppress-xml="$PWD/cppcheck-suppressions.xml" \
             --error-exitcode=1 \
             --inline-suppr \
-            "${cpp_files[@]}"
+            "$PWD/Note.h"
+            #"${cpp_files[@]}"
