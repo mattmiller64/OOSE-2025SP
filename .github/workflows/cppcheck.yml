@@ -36,10 +36,9 @@ jobs:
           printf ' - %s\n' "${cpp_files[@]}"
 
           cppcheck \
-            --enable=all \
-            --language=c++ \
-             --suppress-xml="$PWD/cppcheck-suppressions.xml" \
-            --error-exitcode=1 \
-            --inline-suppr \
-            "$PWD/Note.h"
+          --enable=all \
+          --language=c++ \
+          --error-exitcode=1 \
+          --inline-suppr \
+          "${cpp_files[@]}"
          
